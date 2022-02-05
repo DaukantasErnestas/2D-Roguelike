@@ -19,7 +19,7 @@ func _ready():
 	var map_objects = get_tree().get_nodes_in_group("map_object")
 	for item in map_objects:
 		var new_marker = icons[item.map_icon].duplicate()
-		$MarginContainer.add_child(new_marker)
+		$MarginContainer/Contents.add_child(new_marker)
 		new_marker.show()
 		markers[item] = new_marker
 
@@ -28,7 +28,7 @@ func _process(_delta):
 	for item in map_objects:
 		if markers.has(item) == false:
 			var new_marker = icons[item.map_icon].duplicate()
-			$MarginContainer.add_child(new_marker)
+			$MarginContainer/Contents.add_child(new_marker)
 			new_marker.show()
 			markers[item] = new_marker
 	if Global.player == null:

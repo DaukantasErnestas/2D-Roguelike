@@ -195,6 +195,7 @@ rect_clip_content = true
 position = Vector2( 58, 58 )
 scale = Vector2( 0.25, 0.25 )
 z_index = 2
+z_as_relative = false
 texture = ExtResource( 10 )
 
 [node name="RoomMarker" type="Sprite" parent="CanvasLayer/UI/Minimap/MarginContainer/Contents"]
