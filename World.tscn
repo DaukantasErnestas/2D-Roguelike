@@ -92,7 +92,6 @@ cell_size = Vector2( 16, 16 )
 collision_layer = 9
 collision_mask = 9
 format = 1
-tile_data = PoolIntArray( 720934, 0, 0, 720935, 0, 0, 720936, 0, 0, 720937, 0, 0, 720938, 0, 0, 720939, 0, 0, 786470, 0, 0, 786471, 2, 0, 786472, 3, 0, 786473, 2, 0, 786474, 3, 0, 786475, 0, 0, 852006, 0, 0, 852007, 3, 0, 852008, 2, 0, 852009, 3, 0, 852010, 2, 0, 852011, 0, 0, 917542, 0, 0, 917543, 2, 0, 917544, 3, 0, 917545, 2, 0, 917546, 3, 0, 917547, 0, 0, 983078, 0, 0, 983079, 3, 0, 983080, 2, 0, 983081, 3, 0, 983082, 2, 0, 983083, 0, 0, 1048614, 0, 0, 1048615, 0, 0, 1048616, 0, 0, 1048617, 0, 0, 1048618, 0, 0, 1048619, 0, 0 )
 
 [node name="Walls" type="TileMap" parent="."]
 scale = Vector2( 2, 2 )
@@ -101,7 +100,6 @@ cell_size = Vector2( 16, 16 )
 collision_layer = 9
 collision_mask = 9
 format = 1
-tile_data = PoolIntArray( 720934, 0, 0, 720935, 0, 0, 720936, 0, 0, 720937, 0, 0, 720938, 0, 0, 720939, 0, 0, 786470, 0, 0, 786471, 2, 0, 786472, 3, 0, 786473, 2, 0, 786474, 3, 0, 786475, 0, 0, 852006, 0, 0, 852007, 3, 0, 852008, 2, 0, 852009, 3, 0, 852010, 2, 0, 852011, 0, 0, 917542, 0, 0, 917543, 2, 0, 917544, 3, 0, 917545, 2, 0, 917546, 3, 0, 917547, 0, 0, 983078, 0, 0, 983079, 3, 0, 983080, 2, 0, 983081, 3, 0, 983082, 2, 0, 983083, 0, 0, 1048614, 0, 0, 1048615, 0, 0, 1048616, 0, 0, 1048617, 0, 0, 1048618, 0, 0, 1048619, 0, 0 )
 
 [node name="MapNode" type="Node2D" parent="."]
 scale = Vector2( 5, 5 )
@@ -167,6 +165,7 @@ margin_left = -6.0
 margin_top = 6.0
 margin_right = 122.0
 margin_bottom = 134.0
+rect_pivot_offset = Vector2( 64, 64 )
 rect_clip_content = true
 custom_constants/margin_right = 6
 custom_constants/margin_top = 6
@@ -183,6 +182,16 @@ rect_clip_content = true
 texture = ExtResource( 9 )
 expand = true
 stretch_mode = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayerMarker" type="Sprite" parent="CanvasLayer/UI/Minimap/MarginContainer"]
+position = Vector2( 64, 64 )
+scale = Vector2( 0.25, 0.25 )
+z_index = 2
+z_as_relative = false
+texture = ExtResource( 10 )
 
 [node name="Contents" type="MarginContainer" parent="CanvasLayer/UI/Minimap/MarginContainer"]
 margin_left = 6.0
@@ -190,13 +199,6 @@ margin_top = 6.0
 margin_right = 122.0
 margin_bottom = 122.0
 rect_clip_content = true
-
-[node name="PlayerMarker" type="Sprite" parent="CanvasLayer/UI/Minimap/MarginContainer/Contents"]
-position = Vector2( 58, 58 )
-scale = Vector2( 0.25, 0.25 )
-z_index = 2
-z_as_relative = false
-texture = ExtResource( 10 )
 
 [node name="RoomMarker" type="Sprite" parent="CanvasLayer/UI/Minimap/MarginContainer/Contents"]
 visible = false

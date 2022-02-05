@@ -4,7 +4,7 @@ export(float) var zoom = 1
 export(float) var zoom_increment = 0.01
 
 onready var grid = $MarginContainer/Grid
-onready var player_marker = $MarginContainer/Contents/PlayerMarker
+onready var player_marker = $MarginContainer/PlayerMarker
 onready var room_marker = $MarginContainer/Contents/RoomMarker
 onready var room_connection_marker = $MarginContainer/Contents/RoomConnectionMarker
 
@@ -57,4 +57,5 @@ func _process(_delta):
 			elif item.direction == "Y":
 				markers[item].rotation = PI
 			markers[item].scale = Vector2(2,2) * zoom
+		markers[item].visible = true
 	

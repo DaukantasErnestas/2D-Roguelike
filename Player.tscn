@@ -55,6 +55,7 @@ shape = SubResource( 7 )
 disabled = true
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+visible = false
 polygon = PoolVector2Array( -13, 13, 0, -12, 13, 13 )
 
 [node name="ShootTimer" type="Timer" parent="."]
@@ -88,10 +89,21 @@ process_material = SubResource( 4 )
 texture = ExtResource( 1 )
 
 [node name="CollisionArea" type="Area2D" parent="."]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionArea"]
 position = Vector2( 0, 0.5 )
 shape = SubResource( 8 )
+
+[node name="AreaPolygon" type="Polygon2D" parent="."]
+visible = false
+color = Color( 0.14902, 0.32549, 0.662745, 0.345098 )
+polygon = PoolVector2Array( -13, -12, -13, 13, 13, 13, 13, -12 )
+
+[node name="CollisionPolygon" type="Polygon2D" parent="."]
+visible = false
+color = Color( 1, 0, 0.0941176, 0.345098 )
+polygon = PoolVector2Array( -13, 13, 13, 13, 0, -12 )
 
 [connection signal="timeout" from="ShootTimer" to="." method="_on_ShootTimer_timeout"]
 [connection signal="timeout" from="FlashTimer" to="." method="on_flash_end"]

@@ -33,11 +33,12 @@ func load_map():
 #		$CanvasLayer/UI/Minimap/MarginContainer.add_child(temp)
 #		temp.z_index = 1
 #		temp.position = i * 25
-
 		var area_instance = room_entry_area.instance()
 		$RoomAreas.add_child(area_instance)
 		area_instance.global_position = Vector2(i.x * (width * 64) / 2 + i.x*offset*32, i.y * (height * 64) / 2 + i.y*offset*32) + Vector2(width*64/4,height*64/4)
 		area_instance.get_node("CollisionShape2D").shape.extents = Vector2((width-3)*8,(height-3)*8)
+		area_instance.get_node("CollisionColor").rect_size = Vector2((width-3)*8,(height-3)*8)
+		area_instance.get_node("CollisionColor").rect_position = -Vector2((width-3)*8,(height-3)*8)
 		area_instance.room_pos = i
 		if i == Vector2.ZERO:
 			area_instance.triggered = true
@@ -72,6 +73,7 @@ func load_map():
 			temp.position += i*Vector2(tile_size*(width),tile_size*(height))  #offset by cell position offset
 			temp.position += Vector2(WsizeCell/2,0)+Vector2(tile_size*offset/2,0) #since we are in a function that places red boxes (which are always to the right of the cell, we offset by the room/2 + offset/2
 			temp.modulate = Color("a95757")
+			temp.modulate.a = 0
 			
 			for BlockX in offset:
 				#walls
@@ -95,6 +97,7 @@ func load_map():
 			temp.z_index = 0
 			temp.rotation_degrees = 90
 			temp.modulate = Color("5773a9")
+			temp.modulate.a = 0
 			#new implementation
 			var widthCell = width-offset     #width size of the cell itself (tiles unit size)
 			var heightCell = height-offset   #height size of the cell itself (tiles unit size)

@@ -8,6 +8,10 @@ var can_collide = true
 
 onready var collide_sound = preload("res://SoundObjects/Bullet_Hit.tscn")
 
+func _process(_delta):
+	$VisibilityPolygon.visible = Global.player.debug_mode
+	$CollisionPolygon.visible = Global.player.debug_mode
+
 func _physics_process(_delta):
 	var _move = move_and_slide(velocity.rotated(rotation) * speed)
 	for i in get_slide_count():

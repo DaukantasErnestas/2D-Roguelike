@@ -13,6 +13,9 @@ var color
 func _ready():
 	color = $Sprite.modulate
 
+func _process(_delta):
+	$CollisionPolygon.visible = Global.player.debug_mode
+
 func _physics_process(_delta):
 	if Global.player != null:
 		look_at(Global.player.global_position)

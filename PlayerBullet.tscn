@@ -21,6 +21,16 @@ scale = Vector2( 0.05, 0.05 )
 shape = SubResource( 1 )
 
 [node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+visible = false
 rect = Rect2( -500, -500, 1000, 1000 )
+
+[node name="VisibilityPolygon" type="Polygon2D" parent="."]
+color = Color( 0.827451, 0.0980392, 0.647059, 0.0352941 )
+polygon = PoolVector2Array( -500, -500, 500, -500, 500, 500, -500, 500 )
+
+[node name="CollisionPolygon" type="Polygon2D" parent="."]
+visible = false
+color = Color( 0.14902, 0.32549, 0.662745, 0.345098 )
+polygon = PoolVector2Array( -3, 0, -2.89844, -0.78125, -2.60938, -1.50781, -2.14063, -2.125, -1.5, -2.60156, -0.789063, -2.90625, 0, -3.00781, 0.757813, -2.91406, 1.5, -2.59375, 2.08594, -2.13281, 2.60156, -1.48438, 2.89844, -0.78125, 3, 0.0078125, 2.89063, 0.828125, 2.60156, 1.5, 2.14063, 2.11719, 1.50781, 2.59375, 0.796875, 2.89844, -0.0078125, 3.00781, -0.765625, 2.89844, -1.47656, 2.60938, -2.10938, 2.14063, -2.60938, 1.5, -2.92188, 0.765625 )
 
 [connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]

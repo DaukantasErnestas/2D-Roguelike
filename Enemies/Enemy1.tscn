@@ -23,4 +23,9 @@ shape = SubResource( 1 )
 wait_time = 0.1
 one_shot = true
 
+[node name="CollisionPolygon" type="Polygon2D" parent="."]
+visible = false
+color = Color( 0.14902, 0.32549, 0.662745, 0.345098 )
+polygon = PoolVector2Array( -12, -12, 12, -12, 12, 12, -12, 12 )
+
 [connection signal="timeout" from="FlashTimer" to="." method="on_flash_end"]

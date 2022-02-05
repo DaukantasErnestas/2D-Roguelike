@@ -3,6 +3,8 @@ extends KinematicBody2D
 onready var bullet = preload("res://PlayerBullet.tscn")
 onready var flash_material = preload("res://Flash.tres")
 
+var debug_mode = false
+
 var velocity = Vector2.ZERO
 var speed = 200
 var dash_speed = 400
@@ -31,6 +33,18 @@ func _input(event):
 	if event.is_action_pressed("dash"):
 		if can_dash and velocity.length() > 0:
 			dash()
+
+func _process(delta):
+	if Input.is_action_just_pressed("debug_mode_toggle"):
+		for connection_node in Global.node_creation_parent.get_node("ConnectionNodes").get_children():
+			connection_node.modulate.a = int(!debug_mode)
+		$AreaPolygon.visible = !debug_mode
+		$CollisionPolygon.visible = !debug_mode
+		debug_mode = !debug_mode
+	if debug_mode:
+		$Camera2D.zoom = lerp($Camera2D.zoom,Vector2(3,3),0.1)
+	else:
+		$Camera2D.zoom = lerp($Camera2D.zoom,Vector2(1,1),0.3)
 
 func _physics_process(_delta):
 	if is_dashing:
