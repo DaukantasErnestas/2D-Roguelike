@@ -166,7 +166,6 @@ margin_top = 6.0
 margin_right = 122.0
 margin_bottom = 134.0
 rect_pivot_offset = Vector2( 64, 64 )
-rect_clip_content = true
 custom_constants/margin_right = 6
 custom_constants/margin_top = 6
 custom_constants/margin_left = 6
@@ -198,6 +197,7 @@ margin_left = 6.0
 margin_top = 6.0
 margin_right = 122.0
 margin_bottom = 122.0
+rect_pivot_offset = Vector2( 58, 58 )
 rect_clip_content = true
 
 [node name="RoomMarker" type="Sprite" parent="CanvasLayer/UI/Minimap/MarginContainer/Contents"]

@@ -42,15 +42,16 @@ func _process(_delta):
 		zoom -= zoom_increment
 	zoom = clamp(zoom, 0.25,2)
 	player_marker.scale = Vector2(0.25*zoom,0.25*zoom)
-	grid.rect_scale = Vector2(zoom,zoom)
-	grid.rect_size = $MarginContainer.rect_size / zoom
+#	grid.rect_scale = Vector2(zoom,zoom)
+#	grid.rect_size = Vector2(116,116)/zoom
+#	grid.rect_position = (Vector2(6,6) + Vector2(116,116)/2) * zoom
 	for item in markers:
 		if item.map_icon == "room":
-			var obj_pos = (item.position * zoom - Global.player.position * zoom) * 0.1 + grid.rect_size / 2 * zoom
+			var obj_pos = (item.position * zoom - Global.player.position * zoom) * 0.1 + grid.rect_size / 2 
 			markers[item].position = obj_pos
 			markers[item].scale = Vector2(2,2) * zoom
 		elif item.map_icon == "room_connection":
-			var obj_pos = (item.global_position * zoom - Global.player.position * zoom) * 0.1 + grid.rect_size / 2 * zoom
+			var obj_pos = (item.global_position * zoom - Global.player.position * zoom) * 0.1 + grid.rect_size / 2 
 			markers[item].position = obj_pos
 			if item.direction == "X":
 				markers[item].rotation = PI/2
