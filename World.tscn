@@ -131,7 +131,7 @@ texture = ExtResource( 6 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 19.5, 12 )
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="Theme" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 7 )
 autoplay = true
 

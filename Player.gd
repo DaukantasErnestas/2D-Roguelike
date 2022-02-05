@@ -1,6 +1,8 @@
 extends KinematicBody2D
 
 onready var bullet = preload("res://PlayerBullet.tscn")
+onready var shoot_particles = preload("res://Particles/ShootParticles.tscn")
+onready var shoot_sound = preload("res://SoundObjects/Player_Shoot.tscn")
 onready var flash_material = preload("res://Flash.tres")
 
 var debug_mode = false
@@ -80,8 +82,14 @@ func shoot():
 		bullet_instance.speed = shoot_speed
 		bullet_instance.damage = shot_damage
 		bullet_instance.knockback = shot_knockback
-		bullet_instance.global_position = global_position
+		bullet_instance.global_position = $Positions/BulletSpawnPos.global_position
 		bullet_instance.look_at(get_global_mouse_position())
+		var particles_instance = shoot_particles.instance()
+		add_child(particles_instance)
+		particles_instance.emitting = true
+		var sound_instance = shoot_sound.instance()
+		add_child(sound_instance)
+		sound_instance.play()
 		$ShootTimer.start()
 
 func dash():

@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Images/Triangle.png" type="Texture" id=1]
 [ext_resource path="res://Player.gd" type="Script" id=2]
 [ext_resource path="res://Flash.tres" type="Material" id=3]
+[ext_resource path="res://SoundObjects/Player_Shoot.tscn" type="PackedScene" id=4]
 
 [sub_resource type="ConvexPolygonShape2D" id=7]
 points = PoolVector2Array( 0, -12.8, -12.8, 12.8, 12.8, 12.8 )
@@ -104,6 +105,13 @@ polygon = PoolVector2Array( -13, -12, -13, 13, 13, 13, 13, -12 )
 visible = false
 color = Color( 1, 0, 0.0941176, 0.345098 )
 polygon = PoolVector2Array( -13, 13, 13, 13, 0, -12 )
+
+[node name="Positions" type="Node2D" parent="."]
+
+[node name="BulletSpawnPos" type="Position2D" parent="Positions"]
+position = Vector2( 0, -12 )
+
+[node name="Player_Shoot" parent="." instance=ExtResource( 4 )]
 
 [connection signal="timeout" from="ShootTimer" to="." method="_on_ShootTimer_timeout"]
 [connection signal="timeout" from="FlashTimer" to="." method="on_flash_end"]
