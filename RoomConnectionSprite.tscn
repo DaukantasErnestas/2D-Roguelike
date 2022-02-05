@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Images/Square.png" type="Texture" id=1]
+[ext_resource path="res://RoomConnectionSprite.gd" type="Script" id=2]
+
+[node name="RoomConnectionSprite" type="Sprite" groups=["map_object"]]
+texture = ExtResource( 1 )
+script = ExtResource( 2 )
