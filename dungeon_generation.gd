@@ -52,7 +52,6 @@ func generate(room_seed):
 		for i in dungeon.keys():
 			dungeon.get(i).queue_free()
 		var sed = room_seed * rand_range(-1,1) + rand_range(-100,100)
-		print(sed)
 		dungeon = generate(sed)
 	return dungeon
 

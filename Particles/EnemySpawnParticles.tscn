@@ -1,0 +1,48 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Images/Trail.png" type="Texture" id=1]
+[ext_resource path="res://TemporaryObject.gd" type="Script" id=2]
+
+[sub_resource type="Gradient" id=1]
+offsets = PoolRealArray( 0, 0.307018, 1 )
+colors = PoolColorArray( 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
+
+[sub_resource type="Curve" id=3]
+_data = [ Vector2( 0.0209924, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.127863, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.616412, 0.769939 ), -0.891583, -0.891583, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=4]
+curve = SubResource( 3 )
+
+[sub_resource type="ParticlesMaterial" id=5]
+flag_align_y = true
+flag_disable_z = true
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 400.0
+initial_velocity_random = 0.48
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+linear_accel = 1250.0
+damping = 2000.0
+scale = 0.3
+scale_curve = SubResource( 4 )
+color = Color( 1.2, 1.2, 1.2, 1 )
+color_ramp = SubResource( 2 )
+
+[node name="EnemySpawnParticles" type="Particles2D"]
+position = Vector2( 459, 325 )
+emitting = false
+amount = 64
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource( 5 )
+texture = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="SelfDestructTimer" type="Timer" parent="."]
+one_shot = true
+autostart = true

@@ -8,16 +8,19 @@ var kb_resistance = 0
 var velocity = Vector2.ZERO
 onready var flash_material = preload("res://Flash.tres")
 var immune = false
+var connection_1_connected = false
 var color
 
 func _ready():
-	color = $Sprite.modulate
-
-func _process(_delta):
-	$CollisionPolygon.visible = Global.player.debug_mode
+	if color == null:
+		color = $Sprite.modulate
 
 func _physics_process(_delta):
+	$Sprite.modulate = lerp($Sprite.modulate,color,0.1)
 	if Global.player != null:
+		if connection_1_connected == false:
+			connection_1_connected = true
+			Global.player.connect("debug_mode_toggled",self,"on_debug_mode_toggled")
 		look_at(Global.player.global_position)
 		if immune == false:
 			velocity = global_position.direction_to(Global.player.global_position) * speed
@@ -53,3 +56,6 @@ func on_flash_end():
 	$Sprite.material = null
 	$Sprite.modulate = color
 	immune = false
+	
+func on_debug_mode_toggled():
+	$CollisionPolygon.visible = Global.player.debug_mode

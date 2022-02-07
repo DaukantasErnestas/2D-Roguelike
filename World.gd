@@ -3,6 +3,11 @@ extends Node2D
 var dungeon = {}
 var node_sprite = load("res://Images/Square.png")
 var branch_sprite = load("res://Images/Square.png")
+var max_enemies = 25
+var min_enemies = 15
+var max_spawn_time = 4
+var min_spawn_time = 1
+var RNG = RandomNumberGenerator.new()
 
 var offset = 6
 var path_width = 6
@@ -27,7 +32,7 @@ func load_map():
 	for i in range(0, map_node.get_child_count()):
 		map_node.get_child(i).queue_free()
 	for i in dungeon.keys():
-		
+		RNG.randomize()
 		var temp = Sprite.new()
 #		temp.texture = node_sprite
 #		$CanvasLayer/UI/Minimap/MarginContainer.add_child(temp)
@@ -36,17 +41,24 @@ func load_map():
 		var area_instance = room_entry_area.instance()
 		$RoomAreas.add_child(area_instance)
 		area_instance.global_position = Vector2(i.x * (width * 64) / 2 + i.x*offset*32, i.y * (height * 64) / 2 + i.y*offset*32) + Vector2(width*64/4,height*64/4)
-		area_instance.get_node("CollisionShape2D").shape.extents = Vector2((width-3)*8,(height-3)*8)
-		area_instance.get_node("CollisionColor").rect_size = Vector2((width-3)*8,(height-3)*8)
-		area_instance.get_node("CollisionColor").rect_position = -Vector2((width-3)*8,(height-3)*8)
+		area_instance.get_node("CollisionShape2D").shape.extents = Vector2((width-3)*8,(height-3)*tile_size)
+		area_instance.get_node("CollisionColor").rect_size = Vector2((width-3)*8,(height-3)*tile_size)
+		area_instance.get_node("CollisionColor").rect_position = -Vector2((width-3)*8,(height-3)*tile_size)
+		area_instance.get_node("TopLeftCorner").position = -(area_instance.get_node("CollisionShape2D").shape.extents - Vector2(16,16))
+		area_instance.get_node("BottomRightCorner").position = (area_instance.get_node("CollisionShape2D").shape.extents - Vector2(16,16))
+		area_instance.enemies_to_spawn = RNG.randi_range(min_enemies,max_enemies)
+		area_instance.min_spawn_time = min_spawn_time
+		area_instance.max_spawn_time = max_spawn_time
 		area_instance.room_pos = i
 		if i == Vector2.ZERO:
 			area_instance.triggered = true
 		area_instance.connect("area_entered",self,"room_entered",[area_instance])
+		#make a square
 		for BlockX in width:
 			for BlockY in height:
 				if $Walls.get_cell(((i.x * width) + (i.x * offset)) + BlockX, ((i.y * height) + (i.y * offset)) + BlockY) == -1:
 					$Walls.set_cell(((i.x * width) + (i.x * offset)) + BlockX, ((i.y * height) + (i.y * offset)) + BlockY, 0)
+		#fill the insides with the background tile
 		for BlockX in width-2:
 			for BlockY in height-2:
 				$Background.set_cell(((i.x * width) + (i.x * offset)) + BlockX + 1, ((i.y * height) + (i.y * offset)) + BlockY + 1, 2)
@@ -145,3 +157,5 @@ func room_entered(area,room_area):
 		for BlockY in height:
 			$Walls.set_cell((i.x * width) + (i.x * offset),(i.y * height) + (i.y * offset) + BlockY,0)
 			$Walls.set_cell((i.x * width) + (i.x * offset) + width-1,(i.y * height) + (i.y * offset) + BlockY,0)
+		room_area.get_node("SpawnTimer").wait_time = RNG.randf_range(min_spawn_time,max_spawn_time)
+		room_area.get_node("SpawnTimer").start()

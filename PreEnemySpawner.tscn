@@ -1,0 +1,49 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Images/Trail.png" type="Texture" id=1]
+[ext_resource path="res://PreEnemySpawner.gd" type="Script" id=2]
+
+[sub_resource type="Gradient" id=1]
+offsets = PoolRealArray( 0, 0.482456, 0.842105, 1 )
+colors = PoolColorArray( 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0 )
+
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
+
+[sub_resource type="Curve" id=3]
+_data = [ Vector2( 0.0133588, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.265267, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.776718, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), -4.82208, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=4]
+curve = SubResource( 3 )
+
+[sub_resource type="ParticlesMaterial" id=5]
+emission_shape = 5
+emission_ring_radius = 64.0
+emission_ring_inner_radius = 64.0
+emission_ring_height = 0.0
+flag_align_y = true
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+radial_accel = -125.0
+scale = 0.1
+scale_random = 0.07
+scale_curve = SubResource( 4 )
+color = Color( 1.2, 1.2, 1.2, 1 )
+color_ramp = SubResource( 2 )
+
+[node name="PreEnemySpawner" type="Particles2D"]
+position = Vector2( 437, 314 )
+emitting = false
+amount = 32
+process_material = SubResource( 5 )
+texture = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_SpawnTimer_timeout"]

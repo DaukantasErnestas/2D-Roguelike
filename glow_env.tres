@@ -9,3 +9,4 @@ glow_blend_mode = 0
 glow_hdr_threshold = 0.65
 glow_hdr_luminance_cap = 55.79
 glow_hdr_scale = 2.15
+glow_bicubic_upscale = true

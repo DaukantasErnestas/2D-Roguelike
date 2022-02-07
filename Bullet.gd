@@ -9,12 +9,17 @@ var can_collide = true
 onready var collide_sound = preload("res://SoundObjects/Bullet_Hit.tscn")
 onready var collide_particles = preload("res://Particles/BulletExplodeParticles.tscn")
 
-func _process(_delta):
+var connection_1_connected = false
+
+func _ready():
 	$VisibilityPolygon.visible = Global.player.debug_mode
 	$CollisionPolygon.visible = Global.player.debug_mode
 
 func _physics_process(_delta):
-	var move = move_and_slide(velocity.rotated(rotation) * speed)
+	if connection_1_connected == false:
+		connection_1_connected = true
+		Global.player.connect("debug_mode_toggled",self,"on_debug_mode_toggled")
+	var _move = move_and_slide(velocity.rotated(rotation) * speed)
 	for i in get_slide_count():
 		if can_collide:
 			can_collide = false
@@ -33,3 +38,7 @@ func _physics_process(_delta):
 
 func _on_VisibilityNotifier2D_screen_exited():
 	queue_free()
+	
+func on_debug_mode_toggled():
+	$VisibilityPolygon.visible = Global.player.debug_mode
+	$CollisionPolygon.visible = Global.player.debug_mode

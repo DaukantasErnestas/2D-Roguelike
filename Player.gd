@@ -22,6 +22,8 @@ var shot_damage = 34
 
 var color
 
+signal debug_mode_toggled
+
 func _ready():
 	Global.player = self
 	color = $Sprite.modulate
@@ -29,6 +31,13 @@ func _exit_tree():
 	Global.player = null
 
 func _input(event):
+	if Input.is_action_just_pressed("debug_mode_toggle"):
+		for connection_node in Global.node_creation_parent.get_node("ConnectionNodes").get_children():
+			connection_node.modulate.a = int(!debug_mode)
+		$AreaPolygon.visible = !debug_mode
+		$CollisionPolygon.visible = !debug_mode
+		debug_mode = !debug_mode
+		emit_signal("debug_mode_toggled")
 	if event.is_action_pressed("shoot"):
 		if can_shoot and is_dashing == false:
 			shoot()
@@ -36,13 +45,7 @@ func _input(event):
 		if can_dash and velocity.length() > 0:
 			dash()
 
-func _process(delta):
-	if Input.is_action_just_pressed("debug_mode_toggle"):
-		for connection_node in Global.node_creation_parent.get_node("ConnectionNodes").get_children():
-			connection_node.modulate.a = int(!debug_mode)
-		$AreaPolygon.visible = !debug_mode
-		$CollisionPolygon.visible = !debug_mode
-		debug_mode = !debug_mode
+func _process(_delta):
 	if debug_mode:
 		$Camera2D.zoom = lerp($Camera2D.zoom,Vector2(3,3),0.1)
 	else:
@@ -54,8 +57,6 @@ func _physics_process(_delta):
 		rotation_degrees += 90
 		$DashParticles.emitting = true
 		$DashParticles.process_material.angle = -rotation_degrees
-		print($DashParticles.rotation_degrees)
-		print(rotation_degrees)
 	else:
 		$DashParticles.emitting = false
 		look_at(get_global_mouse_position())
