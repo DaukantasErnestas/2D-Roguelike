@@ -11,6 +11,8 @@ var immune = false
 var connection_1_connected = false
 var color
 
+signal enemy_died
+
 func _ready():
 	if color == null:
 		color = $Sprite.modulate
@@ -50,6 +52,7 @@ func die():
 	on_death()
 	
 func on_death():
+	emit_signal("enemy_died")
 	queue_free()
 
 func on_flash_end():

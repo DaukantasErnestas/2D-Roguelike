@@ -15,6 +15,7 @@ func generate(room_seed):
 	
 	dungeon[Vector2(0,0)] = room.instance()
 	size -= 1
+	dungeon[Vector2(0,0)].discovered = true
 	
 	while(size > 0):
 		for i in dungeon.keys():

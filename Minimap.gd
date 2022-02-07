@@ -8,6 +8,9 @@ onready var player_marker = $MarginContainer/PlayerMarker
 onready var room_marker = $MarginContainer/Contents/RoomMarker
 onready var room_connection_marker = $MarginContainer/Contents/RoomConnectionMarker
 
+onready var undiscovered_room_marker = preload("res://Images/UndiscoveredRoomMinimapIcon.png")
+onready var basic_room_marker = preload("res://Images/RoomMapIcon.png")
+
 onready var icons = {"room": room_marker,"room_connection": room_connection_marker}
 
 var grid_scale
@@ -45,11 +48,16 @@ func _process(_delta):
 #	grid.rect_scale = Vector2(zoom,zoom)
 #	grid.rect_size = Vector2(116,116)/zoom
 #	grid.rect_position = (Vector2(6,6) + Vector2(116,116)/2) * zoom
+	var kmarkers = markers.keys()
 	for item in markers:
 		if item.map_icon == "room":
 			var obj_pos = (item.position * zoom - Global.player.position * zoom) * 0.1 + grid.rect_size / 2 
 			markers[item].position = obj_pos
 			markers[item].scale = Vector2(2,2) * zoom
+			if kmarkers[kmarkers.find(item)].corresponding_room.discovered == true:
+				markers[item].texture = basic_room_marker
+			else:
+				markers[item].texture = undiscovered_room_marker
 		elif item.map_icon == "room_connection":
 			var obj_pos = (item.global_position * zoom - Global.player.position * zoom) * 0.1 + grid.rect_size / 2 
 			markers[item].position = obj_pos

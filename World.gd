@@ -3,9 +3,9 @@ extends Node2D
 var dungeon = {}
 var node_sprite = load("res://Images/Square.png")
 var branch_sprite = load("res://Images/Square.png")
-var max_enemies = 25
-var min_enemies = 15
-var max_spawn_time = 4
+var max_enemies = 10
+var min_enemies = 5
+var max_spawn_time = 3
 var min_spawn_time = 1
 var RNG = RandomNumberGenerator.new()
 
@@ -47,6 +47,8 @@ func load_map():
 		area_instance.get_node("TopLeftCorner").position = -(area_instance.get_node("CollisionShape2D").shape.extents - Vector2(16,16))
 		area_instance.get_node("BottomRightCorner").position = (area_instance.get_node("CollisionShape2D").shape.extents - Vector2(16,16))
 		area_instance.enemies_to_spawn = RNG.randi_range(min_enemies,max_enemies)
+		area_instance.enemies_to_kill = area_instance.enemies_to_spawn
+		area_instance.corresponding_room = dungeon.get(i)
 		area_instance.min_spawn_time = min_spawn_time
 		area_instance.max_spawn_time = max_spawn_time
 		area_instance.room_pos = i
@@ -131,7 +133,7 @@ func load_map():
 			for BlockY in path_width:
 				$Walls.set_cell( (i.x * width + i.x * offset) + (width/2-path_width/2) + BlockY,(i.y * height + i.y * offset) + (height)-1,1)
 			for BlockY in path_width:
-				$Walls.set_cell((i.x * height + i.x * offset) + (width/2-path_width/2) + BlockY, (i.y * height + i.y * offset) + (height+offset),1)
+				$Walls.set_cell((i.x * width + i.x * offset) + (width/2-path_width/2) + BlockY, (i.y * height + i.y * offset) + (height+offset),1)
 			#background filler
 			for BlockX in path_width:
 				for BlockY in offset + 2:
@@ -139,6 +141,10 @@ func load_map():
 	post_gen()
 
 func post_gen():
+	for room in dungeon[Vector2(0,0)].connected_rooms:
+		if dungeon[Vector2(0,0)].connected_rooms[room] != null:
+			print(dungeon[Vector2(0,0)].connected_rooms[room])
+			dungeon[Vector2(0,0)].connected_rooms[room].discovered = true
 	var connection_tiles = $Walls.get_used_cells_by_id(1)
 	for tile in connection_tiles:
 		$Walls.set_cellv(tile,-1)
@@ -149,8 +155,12 @@ func post_gen():
 
 func room_entered(area,room_area):
 	if area.get_parent().is_in_group("Player") and room_area.triggered == false:
-		room_area.triggered = true
 		var i = room_area.room_pos
+		for room in dungeon[i].connected_rooms:
+			if dungeon[i].connected_rooms[room] != null:
+				print(dungeon[i].connected_rooms[room])
+				dungeon[i].connected_rooms[room].discovered = true
+		room_area.triggered = true
 		for BlockX in width:
 			$Walls.set_cell(((i.x * width) + (i.x * offset)) + BlockX,(i.y * height) + (i.y * offset),0)
 			$Walls.set_cell(((i.x * width) + (i.x * offset)) + BlockX,(i.y * height) + (i.y * offset) + height-1,0)
@@ -159,3 +169,25 @@ func room_entered(area,room_area):
 			$Walls.set_cell((i.x * width) + (i.x * offset) + width-1,(i.y * height) + (i.y * offset) + BlockY,0)
 		room_area.get_node("SpawnTimer").wait_time = RNG.randf_range(min_spawn_time,max_spawn_time)
 		room_area.get_node("SpawnTimer").start()
+		
+func room_cleared(room_area,room):
+	var i = room_area.room_pos
+	#X
+	#Right
+	if room.connected_rooms.get(Vector2(1,0)) != null:
+		for BlockY in path_width:
+			$Walls.set_cell((i.x * (width + offset)) + (width)-1, (i.y * height + i.y * offset) + (height/2-path_width/2) + BlockY,-1)
+	#Left
+	if room.connected_rooms.get(Vector2(-1,0)) != null:
+		for BlockY in path_width:
+			$Walls.set_cell((i.x * (width + offset)), (i.y * height + i.y * offset) + (height/2-path_width/2) + BlockY,-1)
+	#Y
+	#Bottom
+	if room.connected_rooms.get(Vector2(0,1)) != null:
+		for BlockX in path_width:
+			$Walls.set_cell( (i.x * width + i.x * offset) + (width/2-path_width/2) + BlockX,(i.y * height + i.y * offset) + (height)-1,-1)
+	#Top
+	if room.connected_rooms.get(Vector2(0,-1)) != null:
+		for BlockX in path_width:
+			$Walls.set_cell( (i.x * width + i.x * offset) + (width/2-path_width/2) + BlockX,(i.y * height + i.y * offset),-1)
+
