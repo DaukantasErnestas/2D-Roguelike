@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Sounds/EnemySpawn.wav" type="AudioStream" id=1]
+
+[node name="Enemy_Spawn" type="AudioStreamPlayer2D"]
+position = Vector2( 510, 300 )
+stream = ExtResource( 1 )
+volume_db = -5.0
+
+[node name="SelfDestructTimer" type="Timer" parent="."]

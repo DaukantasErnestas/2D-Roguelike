@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/EnemySpawn.wav-5598d882f0991a5e4f5c83a89a1cf498.sample"
+
+[deps]
+
+source_file="res://Sounds/EnemySpawn.wav"
+dest_files=[ "res://.import/EnemySpawn.wav-5598d882f0991a5e4f5c83a89a1cf498.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
