@@ -8,6 +8,7 @@ var max_number_rooms = 15
 var generation_chance = 20
 
 func generate(room_seed):
+	var boss_room_generated = false
 	randomize()
 	seed(floor(rand_range(1,100000000)))
 	var dungeon = {}
@@ -49,11 +50,23 @@ func generate(room_seed):
 						size -= 1
 					if(dungeon.get(i).connected_rooms.get(Vector2(0, -1)) == null):
 						connect_rooms(dungeon.get(i), dungeon.get(new_room_position), Vector2(0, -1))
-	while(!is_interesting(dungeon)):
-		for i in dungeon.keys():
-			dungeon.get(i).queue_free()
-		var sed = room_seed * rand_range(-1,1) + rand_range(-100,100)
-		dungeon = generate(sed)
+#	while(!is_interesting(dungeon)):
+#		for i in dungeon.keys():
+#			dungeon.get(i).queue_free()
+#		var sed = room_seed * rand_range(-1,1) + rand_range(-100,100)
+#		dungeon = generate(sed)
+	if boss_room_generated == false:
+		for l in dungeon.keys():
+			if dungeon.get(l).number_of_connections == 1:
+				dungeon.get(l).room_type = "boss"
+				boss_room_generated = true
+				break
+		if boss_room_generated == false:
+			for l in dungeon.keys():
+				if dungeon.get(l).number_of_connections == 2:
+					dungeon.get(l).room_type = "boss"
+					boss_room_generated = true
+					break
 	return dungeon
 
 func connect_rooms(room1, room2, direction):

@@ -1,6 +1,6 @@
 extends Node2D
 
-var room_type = "Basic"
+var room_type = "basic"
 var discovered = false
 
 var connected_rooms = {

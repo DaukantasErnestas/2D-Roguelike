@@ -143,7 +143,6 @@ func load_map():
 func post_gen():
 	for room in dungeon[Vector2(0,0)].connected_rooms:
 		if dungeon[Vector2(0,0)].connected_rooms[room] != null:
-			print(dungeon[Vector2(0,0)].connected_rooms[room])
 			dungeon[Vector2(0,0)].connected_rooms[room].discovered = true
 	var connection_tiles = $Walls.get_used_cells_by_id(1)
 	for tile in connection_tiles:
@@ -158,7 +157,6 @@ func room_entered(area,room_area):
 		var i = room_area.room_pos
 		for room in dungeon[i].connected_rooms:
 			if dungeon[i].connected_rooms[room] != null:
-				print(dungeon[i].connected_rooms[room])
 				dungeon[i].connected_rooms[room].discovered = true
 		room_area.triggered = true
 		for BlockX in width:

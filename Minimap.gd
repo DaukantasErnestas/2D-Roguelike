@@ -1,6 +1,8 @@
 extends MarginContainer
 
 export(float) var zoom = 1
+export(float) var min_zoom = 0.15
+export(float) var max_zoom = 2
 export(float) var zoom_increment = 0.01
 
 onready var grid = $MarginContainer/Grid
@@ -10,8 +12,10 @@ onready var room_connection_marker = $MarginContainer/Contents/RoomConnectionMar
 
 onready var undiscovered_room_marker = preload("res://Images/UndiscoveredRoomMinimapIcon.png")
 onready var basic_room_marker = preload("res://Images/RoomMapIcon.png")
+onready var boss_room_marker = preload("res://Images/BossRoomMinimapIcon.png")
 
 onready var icons = {"room": room_marker,"room_connection": room_connection_marker}
+onready var room_icons = {"undiscovered": undiscovered_room_marker, "basic": basic_room_marker, "boss": boss_room_marker}
 
 var grid_scale
 var markers = {}
@@ -43,7 +47,7 @@ func _process(_delta):
 		zoom += zoom_increment
 	if Input.is_action_pressed("minimap_zoom_out"):
 		zoom -= zoom_increment
-	zoom = clamp(zoom, 0.25,2)
+	zoom = clamp( zoom, min_zoom , max_zoom )
 	player_marker.scale = Vector2(0.25*zoom,0.25*zoom)
 #	grid.rect_scale = Vector2(zoom,zoom)
 #	grid.rect_size = Vector2(116,116)/zoom
@@ -55,7 +59,10 @@ func _process(_delta):
 			markers[item].position = obj_pos
 			markers[item].scale = Vector2(2,2) * zoom
 			if kmarkers[kmarkers.find(item)].corresponding_room.discovered == true:
-				markers[item].texture = basic_room_marker
+				if room_icons.has(kmarkers[kmarkers.find(item)].corresponding_room.room_type):
+					markers[item].texture = room_icons[kmarkers[kmarkers.find(item)].corresponding_room.room_type]
+				else:
+					markers[item].texture = room_icons["undiscovered"]
 			else:
 				markers[item].texture = undiscovered_room_marker
 		elif item.map_icon == "room_connection":
