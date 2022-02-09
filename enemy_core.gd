@@ -62,7 +62,7 @@ func on_death():
 	particles_instance.emitting = true
 	particles_instance.modulate = color
 	particles_instance.self_modulate = Color.from_hsv(0,0.2,0.5,1)
-	particles_instance.z_index = -9999
+	particles_instance.z_index = -4094
 	queue_free()
 
 func on_flash_end():
