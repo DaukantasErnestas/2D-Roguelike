@@ -7,6 +7,8 @@ var knockback = 2000
 var kb_resistance = 0
 var velocity = Vector2.ZERO
 onready var flash_material = preload("res://Flash.tres")
+onready var death_sound = preload("res://SoundObjects/Enemy_Died.tscn")
+onready var death_particles = preload("res://Particles/EnemyDeathParticles.tscn")
 var immune = false
 var connection_1_connected = false
 var color
@@ -53,6 +55,14 @@ func die():
 	
 func on_death():
 	emit_signal("enemy_died")
+	Global.PlaySound(death_sound,global_position,Global.node_creation_parent)
+	var particles_instance = death_particles.instance()
+	particles_instance.global_position = global_position
+	Global.node_creation_parent.add_child(particles_instance)
+	particles_instance.emitting = true
+	particles_instance.modulate = color
+	particles_instance.self_modulate = Color.from_hsv(0,0.2,0.5,1)
+	particles_instance.z_index = -9999
 	queue_free()
 
 func on_flash_end():

@@ -55,7 +55,7 @@ func _process(_delta):
 	var kmarkers = markers.keys()
 	for item in markers:
 		if item.map_icon == "room":
-			var obj_pos = (item.position * zoom - Global.player.position * zoom) * 0.1 + grid.rect_size / 2 
+			var obj_pos = (item.position * zoom - Global.player.position * zoom) * 0.075 + grid.rect_size / 2 
 			markers[item].position = obj_pos
 			markers[item].scale = Vector2(2,2) * zoom
 			if kmarkers[kmarkers.find(item)].corresponding_room.discovered == true:
@@ -66,7 +66,7 @@ func _process(_delta):
 			else:
 				markers[item].texture = undiscovered_room_marker
 		elif item.map_icon == "room_connection":
-			var obj_pos = (item.global_position * zoom - Global.player.position * zoom) * 0.1 + grid.rect_size / 2 
+			var obj_pos = (item.global_position * zoom - Global.player.position * zoom) * 0.075 + grid.rect_size / 2 
 			markers[item].position = obj_pos
 			if item.direction == "X":
 				markers[item].rotation = PI/2

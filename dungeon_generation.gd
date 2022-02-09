@@ -57,13 +57,13 @@ func generate(room_seed):
 #		dungeon = generate(sed)
 	if boss_room_generated == false:
 		for l in dungeon.keys():
-			if dungeon.get(l).number_of_connections == 1:
+			if dungeon.get(l).number_of_connections == 1 and l != Vector2(0,0):
 				dungeon.get(l).room_type = "boss"
 				boss_room_generated = true
 				break
 		if boss_room_generated == false:
 			for l in dungeon.keys():
-				if dungeon.get(l).number_of_connections == 2:
+				if dungeon.get(l).number_of_connections == 2 and l != Vector2(0,0):
 					dungeon.get(l).room_type = "boss"
 					boss_room_generated = true
 					break

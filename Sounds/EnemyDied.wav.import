@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/EnemyDied.wav-74415ba84c701fe4a5a98177ff3404ff.sample"
+
+[deps]
+
+source_file="res://Sounds/EnemyDied.wav"
+dest_files=[ "res://.import/EnemyDied.wav-74415ba84c701fe4a5a98177ff3404ff.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

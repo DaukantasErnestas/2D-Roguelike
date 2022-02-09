@@ -9,10 +9,10 @@ var max_spawn_time = 3
 var min_spawn_time = 1
 var RNG = RandomNumberGenerator.new()
 
-var offset = 6
+var offset = 8
 var path_width = 6
-var width = 24
-var height = 24
+var width = 32
+var height = 32
 
 var tile_size = 8
 
@@ -73,21 +73,11 @@ func load_map():
 			$ConnectionNodes.add_child(temp)
 			temp.direction = "X"
 			temp.z_index = 0
-			#new implementation
-			var widthCell = width-offset     #width size of the cell itself (tiles unit size)
-			var heightCell = height-offset   #height size of the cell itself (tiles unit size)
-			
-			var WsizeCell = tile_size * widthCell  #corrected cell width size to pixels
-			var HsizeCell = tile_size * heightCell #corrected cell height size to pixels
-			
-			
-			temp.position  = Vector2(0,0)    #value of origin cell position
-			temp.position += Vector2(WsizeCell/2,HsizeCell/2)  #translation to the middle of the cell
-			temp.position += Vector2(tile_size/2,tile_size/2)  #translation to of the cube itself to the middle
-			temp.position += i*Vector2(tile_size*(width),tile_size*(height))  #offset by cell position offset
-			temp.position += Vector2(WsizeCell/2,0)+Vector2(tile_size*offset/2,0) #since we are in a function that places red boxes (which are always to the right of the cell, we offset by the room/2 + offset/2
+			#new new implementation
+			temp.position += Vector2(i.x * (width + offset) * tile_size*4/5 + width * tile_size*4/5 + offset * tile_size*2/5,i.y * (height + offset) * tile_size*4/5 + height * tile_size*2/5)
 			temp.modulate = Color("a95757")
 			temp.modulate.a = 0
+			print(temp.position)
 			
 			for BlockX in offset:
 				#walls
@@ -112,19 +102,8 @@ func load_map():
 			temp.rotation_degrees = 90
 			temp.modulate = Color("5773a9")
 			temp.modulate.a = 0
-			#new implementation
-			var widthCell = width-offset     #width size of the cell itself (tiles unit size)
-			var heightCell = height-offset   #height size of the cell itself (tiles unit size)
-			
-			var WsizeCell = tile_size * widthCell  #corrected cell width size to pixels
-			var HsizeCell = tile_size * heightCell #corrected cell height size to pixels
-			
-			
-			temp.position  = Vector2(0,0)    #value of origin cell position
-			temp.position += Vector2(WsizeCell/2,HsizeCell/2)  #translation to the middle of the cell
-			temp.position += Vector2(tile_size/2,tile_size/2)  #translation to of the cube itself to the middle
-			temp.position += i*Vector2(tile_size*(width),tile_size*(height))  #offset by cell position offset
-			temp.position += Vector2(0,HsizeCell/2)+Vector2(0,tile_size*offset/2) #since we are in a function that places red boxes (which are always to the right of the cell, we offset by the room/2 + offset/2
+			#new new implementation
+			temp.position += Vector2(i.x * (width + offset) * tile_size*4/5 + width * tile_size*2/5,i.y * (height + offset) * tile_size*4/5 + height * tile_size*4/5 + offset * tile_size*2/5)
 			
 			for BlockY in offset:
 				$Walls.set_cell((i.x * width + i.x * offset) + (width/2+path_width/2), (i.y * height + i.y * offset) + (height+BlockY),0)

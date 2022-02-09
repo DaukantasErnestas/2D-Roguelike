@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Sounds/EnemyDied.wav" type="AudioStream" id=1]
+[ext_resource path="res://TemporaryObject.gd" type="Script" id=2]
+
+[node name="Enemy_Died" type="AudioStreamPlayer2D"]
+position = Vector2( 506, 295 )
+stream = ExtResource( 1 )
+volume_db = -5.0
+script = ExtResource( 2 )
+
+[node name="SelfDestructTimer" type="Timer" parent="."]
+one_shot = true
+autostart = true
