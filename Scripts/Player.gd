@@ -1,11 +1,10 @@
 extends KinematicBody2D
 
-onready var bullet = preload("res://PlayerBullet.tscn")
+onready var bullet = preload("res://Assets/Player/PlayerBullet.tscn")
 onready var shoot_particles = preload("res://Particles/ShootParticles.tscn")
 onready var shoot_sound = preload("res://SoundObjects/Player_Shoot.tscn")
-onready var flash_material = preload("res://Flash.tres")
-
-var debug_mode = false
+onready var vine_sound = preload("res://SoundObjects/Vine_Boom.tscn")
+onready var flash_material = preload("res://Shaders/Flash.tres")
 
 var velocity = Vector2.ZERO
 var speed = 200
@@ -20,9 +19,15 @@ var shoot_speed = 500
 var shot_knockback = 1000
 var shot_damage = 34
 
+var shoot_shake_intensity = 75
+var shoot_shake_duration = 0.1
+var dash_shake_intensity = 100
+var dash_shake_duration = 0.33
+
 var color
 
 signal debug_mode_toggled
+var signal_emitted = false
 
 func _ready():
 	Global.player = self
@@ -33,11 +38,13 @@ func _exit_tree():
 func _input(event):
 	if Input.is_action_just_pressed("debug_mode_toggle"):
 		for connection_node in Global.node_creation_parent.get_node("ConnectionNodes").get_children():
-			connection_node.modulate.a = int(!debug_mode)
-		$AreaPolygon.visible = !debug_mode
-		$CollisionPolygon.visible = !debug_mode
-		debug_mode = !debug_mode
+			connection_node.modulate.a = int(!Global.debug_mode)
+		$AreaPolygon.visible = !Global.debug_mode
+		$CollisionPolygon.visible = !Global.debug_mode
+		Global.debug_mode = !Global.debug_mode
 		emit_signal("debug_mode_toggled")
+	if Input.is_action_just_pressed("vine_mode_toggle"):
+		Global.vine_mode = !Global.vine_mode
 	if event.is_action_pressed("shoot"):
 		if can_shoot and is_dashing == false:
 			shoot()
@@ -46,7 +53,10 @@ func _input(event):
 			dash()
 
 func _process(_delta):
-	if debug_mode:
+	if signal_emitted == false:
+		emit_signal("debug_mode_toggled")
+		signal_emitted = true
+	if Global.debug_mode:
 		$Camera2D.zoom = lerp($Camera2D.zoom,Vector2(3,3),0.1)
 	else:
 		$Camera2D.zoom = lerp($Camera2D.zoom,Vector2(1,1),0.3)
@@ -88,9 +98,14 @@ func shoot():
 		var particles_instance = shoot_particles.instance()
 		add_child(particles_instance)
 		particles_instance.emitting = true
-		var sound_instance = shoot_sound.instance()
+		var sound_instance
+		if Global.vine_mode == false:
+			sound_instance = shoot_sound.instance()
+		else:
+			sound_instance = vine_sound.instance()
 		add_child(sound_instance)
 		sound_instance.play()
+		Global.camera.shake(shoot_shake_intensity,shoot_shake_duration,shoot_shake_intensity)
 		$ShootTimer.start()
 
 func dash():
@@ -99,6 +114,7 @@ func dash():
 	set_collision_layer_bit(1,false)
 	can_dash = false
 	immune = true
+	Global.camera.shake(dash_shake_intensity,dash_shake_duration,dash_shake_intensity)
 	$DashTimer.start()
 
 func _on_ShootTimer_timeout():
@@ -140,3 +156,10 @@ func _on_DashTimer_timeout():
 
 func _on_DashCooldownTimer_timeout():
 	immune = false
+
+func _on_Player_debug_mode_toggled():
+	for connection_node in Global.node_creation_parent.get_node("ConnectionNodes").get_children():
+		connection_node.modulate.a = int(Global.debug_mode)
+	$AreaPolygon.visible = Global.debug_mode
+	$AreaPolygon.visible = Global.debug_mode
+	$CollisionPolygon.visible = Global.debug_mode

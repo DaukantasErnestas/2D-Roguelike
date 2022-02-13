@@ -17,8 +17,9 @@ var height = 32
 var tile_size = 8
 
 onready var map_node = $MapNode
-onready var room_entry_area = preload("res://RoomEntryArea.tscn")
-onready var room_connection_sprite = preload("res://RoomConnectionSprite.tscn")
+onready var room_entry_area = preload("res://Assets/RoomEntryArea.tscn")
+onready var room_connection_sprite = preload("res://Assets/RoomConnectionSprite.tscn")
+onready var portal = preload("res://Assets/Portal.tscn")
 
 func _ready():
 	dungeon = dungeon_generation.generate(0)
@@ -77,7 +78,6 @@ func load_map():
 			temp.position += Vector2(i.x * (width + offset) * tile_size*4/5 + width * tile_size*4/5 + offset * tile_size*2/5,i.y * (height + offset) * tile_size*4/5 + height * tile_size*2/5)
 			temp.modulate = Color("a95757")
 			temp.modulate.a = 0
-			print(temp.position)
 			
 			for BlockX in offset:
 				#walls
@@ -131,6 +131,9 @@ func post_gen():
 		if (wrapi(int(tile.x),0, 10) >= 5 and wrapi(int(tile.y),0, 10) < 5) or (wrapi(int(tile.x),0, 10) < 5 and wrapi(int(tile.y),0, 10) >= 5):
 			$Background.set_cellv(tile,3)
 
+func portal_entered():
+	get_tree().reload_current_scene()
+
 func room_entered(area,room_area):
 	if area.get_parent().is_in_group("Player") and room_area.triggered == false:
 		var i = room_area.room_pos
@@ -149,6 +152,10 @@ func room_entered(area,room_area):
 		
 func room_cleared(room_area,room):
 	var i = room_area.room_pos
+	if room_area.corresponding_room.room_type == "boss":
+			var portal_instance = portal.instance()
+			Global.node_creation_parent.add_child(portal_instance)
+			portal_instance.global_position = room_area.global_position
 	#X
 	#Right
 	if room.connected_rooms.get(Vector2(1,0)) != null:
@@ -167,4 +174,5 @@ func room_cleared(room_area,room):
 	if room.connected_rooms.get(Vector2(0,-1)) != null:
 		for BlockX in path_width:
 			$Walls.set_cell( (i.x * width + i.x * offset) + (width/2-path_width/2) + BlockX,(i.y * height + i.y * offset),-1)
+
 

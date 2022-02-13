@@ -6,16 +6,24 @@ var speed = 100
 var knockback = 2000
 var kb_resistance = 0
 var velocity = Vector2.ZERO
-onready var flash_material = preload("res://Flash.tres")
+onready var flash_material = preload("res://Shaders/Flash.tres")
 onready var death_sound = preload("res://SoundObjects/Enemy_Died.tscn")
+onready var vine_sound = preload("res://SoundObjects/Vine_Boom.tscn")
 onready var death_particles = preload("res://Particles/EnemyDeathParticles.tscn")
 var immune = false
+var map_icon = "enemy"
 var connection_1_connected = false
 var color
+
+var hit_shake_intensity = 50
+var hit_shake_duration = 0.2
+var die_shake_intensity = 300
+var die_shake_duration = 0.25
 
 signal enemy_died
 
 func _ready():
+	Global.Update_Minimap()
 	if color == null:
 		color = $Sprite.modulate
 
@@ -49,13 +57,21 @@ func on_damage_taken():
 	immune = true
 	if health <= 0:
 		die()
+	else:
+		Global.camera.shake(hit_shake_intensity,hit_shake_duration,hit_shake_intensity)
 		
 func die():
 	on_death()
 	
 func on_death():
+	remove_from_group("map_object")
+	Global.camera.shake(die_shake_intensity,die_shake_duration,die_shake_intensity)
+	Global.Update_Minimap()
 	emit_signal("enemy_died")
-	Global.PlaySound(death_sound,global_position,Global.node_creation_parent)
+	if Global.vine_mode == false:
+		Global.PlaySound(death_sound,global_position,Global.node_creation_parent)
+	else:
+		Global.PlaySound(vine_sound,global_position,Global.node_creation_parent)
 	var particles_instance = death_particles.instance()
 	particles_instance.global_position = global_position
 	Global.node_creation_parent.add_child(particles_instance)
@@ -71,4 +87,4 @@ func on_flash_end():
 	immune = false
 	
 func on_debug_mode_toggled():
-	$CollisionPolygon.visible = Global.player.debug_mode
+	$CollisionPolygon.visible = Global.debug_mode

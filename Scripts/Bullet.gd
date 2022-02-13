@@ -7,13 +7,14 @@ var damage = 0
 var can_collide = true
 
 onready var collide_sound = preload("res://SoundObjects/Bullet_Hit.tscn")
+onready var vine_sound = preload("res://SoundObjects/Vine_Boom.tscn")
 onready var collide_particles = preload("res://Particles/BulletExplodeParticles.tscn")
 
 var connection_1_connected = false
 
 func _ready():
-	$VisibilityPolygon.visible = Global.player.debug_mode
-	$CollisionPolygon.visible = Global.player.debug_mode
+	$VisibilityPolygon.visible = Global.debug_mode
+	$CollisionPolygon.visible = Global.debug_mode
 
 func _physics_process(_delta):
 	if connection_1_connected == false:
@@ -28,7 +29,10 @@ func _physics_process(_delta):
 				collision.collider.take_damage(damage, knockback)
 				queue_free()
 			else:
-				Global.PlaySound(collide_sound,global_position,Global.node_creation_parent)
+				if Global.vine_mode == false:
+					Global.PlaySound(collide_sound,global_position,Global.node_creation_parent)
+				else:
+					Global.PlaySound(vine_sound,global_position,Global.node_creation_parent, -10)
 				var particles_instance = collide_particles.instance()
 				Global.node_creation_parent.add_child(particles_instance)
 				particles_instance.global_position = global_position
@@ -40,5 +44,5 @@ func _on_VisibilityNotifier2D_screen_exited():
 	queue_free()
 	
 func on_debug_mode_toggled():
-	$VisibilityPolygon.visible = Global.player.debug_mode
-	$CollisionPolygon.visible = Global.player.debug_mode
+	$VisibilityPolygon.visible = Global.debug_mode
+	$CollisionPolygon.visible = Global.debug_mode

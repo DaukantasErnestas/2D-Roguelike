@@ -1,6 +1,6 @@
 extends Node
 
-var room = preload("res://Room.tscn")
+var room = preload("res://Assets/Room.tscn")
 
 var min_number_rooms = 10
 var max_number_rooms = 15
@@ -17,6 +17,7 @@ func generate(room_seed):
 	dungeon[Vector2(0,0)] = room.instance()
 	size -= 1
 	dungeon[Vector2(0,0)].discovered = true
+	dungeon[Vector2(0,0)].room_type = "home"
 	
 	while(size > 0):
 		for i in dungeon.keys():

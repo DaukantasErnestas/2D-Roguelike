@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scripts/TemporaryObject.gd" type="Script" id=1]
+[ext_resource path="res://Sounds/Vine-boom-sound-effect.wav" type="AudioStream" id=2]
+
+[node name="Vine_Boom" type="AudioStreamPlayer"]
+stream = ExtResource( 2 )
+script = ExtResource( 1 )
+
+[node name="SelfDestructTimer" type="Timer" parent="."]

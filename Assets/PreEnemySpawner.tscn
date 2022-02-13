@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Images/Trail.png" type="Texture" id=1]
-[ext_resource path="res://PreEnemySpawner.gd" type="Script" id=2]
+[ext_resource path="res://Scripts/PreEnemySpawner.gd" type="Script" id=2]
 
 [sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0, 0.482456, 0.842105, 1 )

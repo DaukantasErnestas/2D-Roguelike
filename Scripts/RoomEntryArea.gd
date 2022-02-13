@@ -9,18 +9,19 @@ var min_spawn_time = 1
 var max_spawn_time = 1
 var RNG = RandomNumberGenerator.new()
 onready var enemy1 = preload("res://Enemies/Enemy1.tscn")
-onready var spawner = preload("res://PreEnemySpawner.tscn")
+onready var spawner = preload("res://Assets/PreEnemySpawner.tscn")
 
 var connection_1_connected = false
 
 var map_icon = "room"
 
+func _ready():
+	Global.Update_Minimap()
+
 func _process(_delta):
 	if connection_1_connected == false:
 		connection_1_connected = true
 		Global.player.connect("debug_mode_toggled",self,"on_debug_mode_toggled")
-
-
 
 func spawn_enemy():
 	RNG.randomize()
@@ -48,5 +49,5 @@ func enemies_cleared():
 	Global.node_creation_parent.room_cleared(self,corresponding_room)
 	
 func on_debug_mode_toggled():
-	$CollisionColor.visible = Global.player.debug_mode
+	$CollisionColor.visible = Global.debug_mode
 	

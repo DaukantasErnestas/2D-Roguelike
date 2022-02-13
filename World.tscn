@@ -1,17 +1,19 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=17 format=2]
 
-[ext_resource path="res://Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Assets/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://glow_env.tres" type="Environment" id=2]
-[ext_resource path="res://World.gd" type="Script" id=3]
+[ext_resource path="res://Scripts/World.gd" type="Script" id=3]
 [ext_resource path="res://Images/Square.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Portal.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Images/Squares.png" type="Texture" id=6]
-[ext_resource path="res://Sounds/GameMusic.wav" type="AudioStream" id=7]
 [ext_resource path="res://Images/Minimap.png" type="Texture" id=8]
 [ext_resource path="res://Images/Tiles.png" type="Texture" id=9]
 [ext_resource path="res://Images/PlayerMinimapIcon.png" type="Texture" id=10]
-[ext_resource path="res://Minimap.gd" type="Script" id=11]
+[ext_resource path="res://Scripts/Minimap.gd" type="Script" id=11]
 [ext_resource path="res://Images/RoomMapIcon.png" type="Texture" id=12]
 [ext_resource path="res://Images/RoomConnectionMapIcon.png" type="Texture" id=13]
+[ext_resource path="res://Scripts/UI.gd" type="Script" id=14]
+[ext_resource path="res://Images/EnemyMinimapIcon.png" type="Texture" id=16]
 
 [sub_resource type="ConvexPolygonShape2D" id=2]
 points = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
@@ -129,15 +131,12 @@ texture = ExtResource( 6 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 19.5, 12 )
 
-[node name="Theme" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 7 )
-autoplay = true
-
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="UI" type="Control" parent="CanvasLayer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+script = ExtResource( 14 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -204,6 +203,13 @@ position = Vector2( 30, 18.6667 )
 z_index = 1
 texture = ExtResource( 12 )
 
+[node name="EnemyMarker" type="Sprite" parent="CanvasLayer/UI/Minimap/MarginContainer/Contents"]
+visible = false
+position = Vector2( 30, 18.6667 )
+scale = Vector2( 0.1, 0.1 )
+z_index = 1
+texture = ExtResource( 16 )
+
 [node name="RoomConnectionMarker" type="Sprite" parent="CanvasLayer/UI/Minimap/MarginContainer/Contents"]
 visible = false
 position = Vector2( 30, 18.6667 )
@@ -219,3 +225,89 @@ patch_margin_left = 6
 patch_margin_top = 6
 patch_margin_right = 6
 patch_margin_bottom = 6
+
+[node name="Debug" type="MarginContainer" parent="CanvasLayer/UI"]
+margin_left = 6.0
+margin_top = 6.0
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UI/Debug"]
+margin_right = 34.0
+margin_bottom = 34.0
+
+[node name="Frames" type="MarginContainer" parent="CanvasLayer/UI/Debug/VBoxContainer"]
+margin_right = 34.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UI/Debug/VBoxContainer/Frames"]
+margin_right = 34.0
+
+[node name="FPS_Counter" type="Label" parent="CanvasLayer/UI/Debug/VBoxContainer/Frames/VBoxContainer"]
+visible = false
+margin_right = 182.0
+margin_bottom = 14.0
+text = "FPS: Loading"
+
+[node name="Frame_Time_Counter" type="Label" parent="CanvasLayer/UI/Debug/VBoxContainer/Frames/VBoxContainer"]
+visible = false
+margin_right = 182.0
+margin_bottom = 14.0
+text = "Frame time: Loading"
+
+[node name="Phys_FPS_Counter" type="Label" parent="CanvasLayer/UI/Debug/VBoxContainer/Frames/VBoxContainer"]
+visible = false
+margin_right = 182.0
+margin_bottom = 14.0
+text = "Physics FPS: Loading"
+
+[node name="Phys_Frame_Time_Counter" type="Label" parent="CanvasLayer/UI/Debug/VBoxContainer/Frames/VBoxContainer"]
+visible = false
+margin_right = 182.0
+margin_bottom = 14.0
+text = "Physics frame time: Loading"
+
+[node name="Other" type="MarginContainer" parent="CanvasLayer/UI/Debug/VBoxContainer"]
+margin_top = 4.0
+margin_right = 34.0
+margin_bottom = 20.0
+custom_constants/margin_top = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UI/Debug/VBoxContainer/Other"]
+margin_top = 16.0
+margin_right = 34.0
+margin_bottom = 16.0
+
+[node name="Player_Rotation" type="Label" parent="CanvasLayer/UI/Debug/VBoxContainer/Other/VBoxContainer"]
+visible = false
+margin_right = 182.0
+margin_bottom = 14.0
+text = "Player rotation: Loading"
+
+[node name="Player_Pos" type="Label" parent="CanvasLayer/UI/Debug/VBoxContainer/Other/VBoxContainer"]
+visible = false
+margin_right = 182.0
+margin_bottom = 14.0
+text = "Player position: Loading"
+
+[node name="Player_Immune" type="Label" parent="CanvasLayer/UI/Debug/VBoxContainer/Other/VBoxContainer"]
+visible = false
+margin_right = 182.0
+margin_bottom = 14.0
+text = "Player immune: Loading"
+
+[node name="Player_Def_Color" type="Label" parent="CanvasLayer/UI/Debug/VBoxContainer/Other/VBoxContainer"]
+visible = false
+margin_right = 182.0
+margin_bottom = 14.0
+text = "Player default color: Loading"
+
+[node name="Player_Curr_Color" type="Label" parent="CanvasLayer/UI/Debug/VBoxContainer/Other/VBoxContainer"]
+visible = false
+margin_right = 182.0
+margin_bottom = 14.0
+text = "Player current color: Loading"
+
+[node name="Portal" parent="." instance=ExtResource( 5 )]

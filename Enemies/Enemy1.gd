@@ -1,2 +1,2 @@
-extends "res://enemy_core.gd"
+extends "res://Scripts/enemy_core.gd"
 

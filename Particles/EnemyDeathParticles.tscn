@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Images/Circle.png" type="Texture" id=1]
-[ext_resource path="res://DeathParticles.gd" type="Script" id=2]
+[ext_resource path="res://Scripts/DeathParticles.gd" type="Script" id=2]
 
 [sub_resource type="ParticlesMaterial" id=3]
 resource_local_to_scene = true

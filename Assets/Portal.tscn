@@ -1,0 +1,145 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://Fonts/VCR_OSD_MONO_1.001.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Fonts/6x6-pixel-font.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://Fonts/Minecraft.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://Images/Box.png" type="Texture" id=4]
+[ext_resource path="res://Images/NinePatchRect.png" type="Texture" id=5]
+[ext_resource path="res://Scripts/Portal.gd" type="Script" id=6]
+[ext_resource path="res://Images/Circle.png" type="Texture" id=7]
+
+[sub_resource type="Gradient" id=3]
+offsets = PoolRealArray( 0, 0.5, 1 )
+colors = PoolColorArray( 0.694118, 0.694118, 0.694118, 0, 1, 1, 1, 1, 0.694118, 0.694118, 0.694118, 0 )
+
+[sub_resource type="GradientTexture" id=4]
+gradient = SubResource( 3 )
+
+[sub_resource type="ParticlesMaterial" id=5]
+emission_shape = 5
+emission_ring_radius = 32.0
+emission_ring_inner_radius = 32.0
+emission_ring_height = 1.0
+flag_disable_z = true
+spread = 0.0
+gravity = Vector3( 0, 0, 0 )
+orbit_velocity = 0.1
+orbit_velocity_random = 0.5
+radial_accel = -1000.0
+tangential_accel = -50.0
+scale = 0.01
+scale_random = 0.1
+color = Color( 1.2, 1.2, 1.2, 1 )
+color_ramp = SubResource( 4 )
+
+[sub_resource type="CircleShape2D" id=6]
+radius = 41.1947
+
+[sub_resource type="StyleBoxTexture" id=7]
+texture = ExtResource( 5 )
+region_rect = Rect2( 0, 0, 64, 64 )
+margin_left = 8.93685
+margin_right = 8.47862
+margin_top = 8.6026
+margin_bottom = 9.20766
+
+[sub_resource type="DynamicFont" id=9]
+size = 20
+outline_size = 1
+outline_color = Color( 0.0941176, 0.0941176, 0.0941176, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxTexture" id=8]
+texture = ExtResource( 4 )
+region_rect = Rect2( 0, 0, 64, 64 )
+margin_left = 8.62864
+margin_right = 8.14931
+margin_top = 7.51819
+margin_bottom = 10.4311
+
+[sub_resource type="DynamicFont" id=10]
+size = 11
+outline_size = 1
+outline_color = Color( 0.196078, 0.196078, 0.196078, 1 )
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=11]
+size = 8
+outline_size = 1
+outline_color = Color( 0.34902, 0, 0, 0.701961 )
+font_data = ExtResource( 3 )
+
+[node name="Portal" type="Particles2D"]
+self_modulate = Color( 0.466667, 0, 0.878431, 1 )
+position = Vector2( 559, 250 )
+z_index = -4000
+amount = 100
+speed_scale = 0.75
+process_material = SubResource( 5 )
+texture = ExtResource( 7 )
+script = ExtResource( 6 )
+
+[node name="EntranceArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EntranceArea"]
+visible = false
+shape = SubResource( 6 )
+
+[node name="AreaSprite" type="Sprite" parent="."]
+visible = false
+modulate = Color( 0.14902, 0.32549, 0.662745, 0.345098 )
+scale = Vector2( 0.321, 0.321 )
+texture = ExtResource( 7 )
+
+[node name="Popup" type="Panel" parent="."]
+margin_left = -80.0
+margin_top = -100.0
+margin_right = 80.0
+margin_bottom = -50.0
+rect_scale = Vector2( 1, 1e-05 )
+custom_styles/panel = SubResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="KeyToPress" type="Label" parent="Popup"]
+margin_left = 6.0
+margin_top = 6.0
+margin_right = 45.0
+margin_bottom = 45.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 9 )
+custom_styles/normal = SubResource( 8 )
+text = "E"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Popup"]
+margin_left = 45.0
+margin_top = 6.0
+margin_right = 154.0
+margin_bottom = 45.0
+custom_fonts/font = SubResource( 10 )
+text = "GO TO THE NEXT LEVEL"
+align = 1
+autowrap = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Popup"]
+margin_left = 45.0
+margin_top = 30.0
+margin_right = 154.0
+margin_bottom = 45.0
+rect_clip_content = false
+custom_colors/default_color = Color( 1.2, 0.25, 0.25, 1 )
+custom_fonts/normal_font = SubResource( 11 )
+bbcode_enabled = true
+bbcode_text = "[center][shake](YOU CANNOT GO BACK![/shake][/center]"
+text = "(YOU CANNOT GO BACK!"
+
+[node name="Tween" type="Tween" parent="."]
+
+[connection signal="body_entered" from="EntranceArea" to="." method="_on_EntranceArea_body_entered"]
+[connection signal="body_exited" from="EntranceArea" to="." method="_on_EntranceArea_body_exited"]
